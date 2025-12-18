@@ -24,7 +24,7 @@ router.post("/api/products", checkSchema(addProductValidationSchema), async (req
         return response.status(200).send(savedProduct);
     }
     catch (error) {
-        return response.status(400).send({ error: error.message});
+        return response.status(400).send({ error: error.message });
     }
 });
 
@@ -32,6 +32,7 @@ router.get("/api/products", async (request, response) => {
     try {
         const products = await Product.find();
         console.log("PRODUCTS ROUTE HIT");
+        console.log("Products count:", products.length);
         response.status(200).send(products);
     }
     catch (error) {
@@ -54,38 +55,38 @@ router.get("/api/products/:id", async (request, response) => {
     }
 });
 
-router.put("/api/products/:id" ,async (request, response) => {
-    const {id} = request.params;
+router.put("/api/products/:id", async (request, response) => {
+    const { id } = request.params;
 
-    try{
+    try {
         const savedProduct = await Product.findByIdAndUpdate(
             id,
             request.body,
-            {new : true, runValidators : true}
+            { new: true, runValidators: true }
         );
-        if(!savedProduct){
-            return response.status(400).send({error : "Prouduct not found"});
+        if (!savedProduct) {
+            return response.status(400).send({ error: "Prouduct not found" });
         }
         return response.status(200).send(savedProduct);
-    }   
-    catch(error){
-        response.status(400).send({error : error.message});
+    }
+    catch (error) {
+        response.status(400).send({ error: error.message });
     }
 });
 
-router.delete("/api/products/:id" ,async (request,response) => {
-    const {id} = request.params;
+router.delete("/api/products/:id", async (request, response) => {
+    const { id } = request.params;
 
-    try{
+    try {
         const deletedProduct = await Product.findByIdAndDelete(id);
 
-        if(!deletedProduct){
-            return response.status(400).send({error : "Product not found"});
+        if (!deletedProduct) {
+            return response.status(400).send({ error: "Product not found" });
         }
-        return response.status(200).send({message : "Product deleted successfully"});
+        return response.status(200).send({ message: "Product deleted successfully" });
     }
-    catch(error){
-        return response.status(400).send({error : error.message});
+    catch (error) {
+        return response.status(400).send({ error: error.message });
     }
 });
 export default router;
