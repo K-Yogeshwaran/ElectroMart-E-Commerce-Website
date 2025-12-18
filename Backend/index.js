@@ -17,9 +17,13 @@ mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("Database connected successfully"))
     .catch((error) => console.log(error));
 
-mongoose.connection.once("open", () => {
-    console.log("Connected DB name:", mongoose.connection.name);
+mongoose.connection.once("open", async () => {
+    console.log("Connected DB:", mongoose.connection.name);
+
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    console.log("Collections:", collections.map(c => c.name));
 });
+
 
 
 const app = express();
