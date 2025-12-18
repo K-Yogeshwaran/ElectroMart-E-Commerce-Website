@@ -31,6 +31,7 @@ router.post("/api/products", checkSchema(addProductValidationSchema), async (req
 router.get("/api/products", async (request, response) => {
     try {
         const products = await Product.find();
+        console.log("PRODUCTS ROUTE HIT");
         response.status(200).send(products);
     }
     catch (error) {
