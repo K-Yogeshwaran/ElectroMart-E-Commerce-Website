@@ -24,6 +24,10 @@ mongoose.connection.once("open", async () => {
     console.log("Collections:", collections.map(c => c.name));
 });
 
+if (!process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET is not defined");
+}
+
 
 
 const app = express();
