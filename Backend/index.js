@@ -6,7 +6,7 @@ import { checkSchema, validationResult, matchedData } from "express-validator";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import cors from "cors";
-import dotenv from"dotenv";
+import dotenv from "dotenv";
 
 dotenv.config();
 import { createUserValidationSchema } from "./utils/validationSchemas.js";
@@ -17,11 +17,16 @@ mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("Database connected successfully"))
     .catch((error) => console.log(error));
 
+mongoose.connection.once("open", () => {
+    console.log("Connected DB name:", mongoose.connection.name);
+});
+
+
 const app = express();
 
 app.use(cors({
-    origin : "http://localhost:5173",
-    credentials : true
+    origin: "http://localhost:5173",
+    credentials: true
 }));
 app.use(express.json());
 
@@ -31,9 +36,9 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: 60000 * 60,
-        httpOnly : true,
-        sameSite : "lax",
-        secure : false  
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false
     }
 }));
 app.use(passport.initialize());
@@ -55,22 +60,22 @@ passport.use(new LocalStrategy(
 
             return done(null, user);
         }
-        catch(error){
+        catch (error) {
             return done(error);
         }
-        
+
     }
 ));
-passport.serializeUser((user,done) => {
-    return done(null , user._id);
+passport.serializeUser((user, done) => {
+    return done(null, user._id);
 });
 
-passport.deserializeUser( async (id , done) => {
-    try{
+passport.deserializeUser(async (id, done) => {
+    try {
         const user = await User.findById(id).select("-password");
-        done(null , user);
+        done(null, user);
     }
-    catch(error) {
+    catch (error) {
         done(error);
     }
 });
@@ -87,30 +92,30 @@ app.get("/", (request, response) => {
 });
 
 
-app.post("/api/login" , (request,response , next) => {
-    passport.authenticate("local" , (error , user , info) => {
-        if(error){
+app.post("/api/login", (request, response, next) => {
+    passport.authenticate("local", (error, user, info) => {
+        if (error) {
             next(error);
         }
-        if(!user){
-            return response.status(400).send({message : "Login failed" , info});
+        if (!user) {
+            return response.status(400).send({ message: "Login failed", info });
         }
 
         request.logIn(user, (error) => {
-            if(error) {
+            if (error) {
                 return next(error);
             }
             console.log(user);
-            return response.json({message : "Login Successfull", user});
+            return response.json({ message: "Login Successfull", user });
         });
-    })(request,response,next);
+    })(request, response, next);
 });
 
-app.post("/api/logout" , (request,response) => {
+app.post("/api/logout", (request, response) => {
     request.logOut(() => {
-        response.json({message : "Logged Out Successfully."});
+        response.json({ message: "Logged Out Successfully." });
     });
-}); 
+});
 
 
 app.post("/api/register", checkSchema(createUserValidationSchema), async (request, response) => {
@@ -134,9 +139,9 @@ app.post("/api/register", checkSchema(createUserValidationSchema), async (reques
 
 });
 
-app.post("/api/me" , (request,response) => {
-    if(!request.isAuthenticated()){
-        return response.status(401).send({message : "User not authenticated"});
+app.post("/api/me", (request, response) => {
+    if (!request.isAuthenticated()) {
+        return response.status(401).send({ message: "User not authenticated" });
     }
     return response.json(request.user);
 });
