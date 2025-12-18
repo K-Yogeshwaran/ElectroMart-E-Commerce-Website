@@ -1,7 +1,5 @@
-import React from 'react';
-import Navbar from "./Navbar";
-import {Footer} from "./Footer";
 
+import Navbar from "./Navbar";
 import {Link} from "react-router-dom";
 
 import "./HomePage.css";
@@ -56,7 +54,6 @@ function HomePage() {
 
                 </div>
             </div>
-            <Footer/>
         </div>
     )
 }
