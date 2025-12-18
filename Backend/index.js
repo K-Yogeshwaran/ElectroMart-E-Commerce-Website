@@ -8,6 +8,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import cors from "cors";
 import dotenv from"dotenv";
 
+dotenv.config();
 import { createUserValidationSchema } from "./utils/validationSchemas.js";
 import { User } from "./mongoose/schema/UserSchema.js";
 import MainRouter from "./routes/MainRouter.js";
