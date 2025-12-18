@@ -7,6 +7,13 @@ import { addProductValidationSchema } from "../utils/validationSchemas.js";
 
 const router = Router();
 
+router.get("/api/products-raw", async (req, res) => {
+    const rawProducts = await Product.collection.find({}).toArray();
+    console.log("RAW Mongo products:", rawProducts.length);
+    res.json(rawProducts);
+});
+
+
 router.post("/api/products", checkSchema(addProductValidationSchema), async (request, response) => {
     const errors = validationResult(request);
 
