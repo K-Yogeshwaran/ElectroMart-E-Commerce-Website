@@ -33,7 +33,7 @@ if (!process.env.SESSION_SECRET) {
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://13.50.249.11",
     credentials: true
 }));
 app.use(express.json());

@@ -18,7 +18,7 @@ function Products() {
 
     useEffect(() => {
 
-        fetch("http://localhost:3000/api/products")
+        fetch("http://13.48.133.4:3000/api/products")
             .then(response => response.json())
             .then(data => setProductList(data))
             .catch(error => console.log(error));
@@ -27,7 +27,7 @@ function Products() {
 
     async function addToCart(id){
         
-        const response  = await fetch("http://localhost:3000/api/cart/add" , {
+        const response  = await fetch("http://13.48.133.4:3000/api/cart/add" , {
             method : "POST",
             credentials : "include",
             headers : {"Content-Type": "application/json"},
