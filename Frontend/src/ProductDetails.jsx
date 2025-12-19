@@ -18,7 +18,7 @@ function ProductDetails() {
     const featuresList = [];
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/products/" + id)
+        fetch("http://13.48.133.4:3000/api/products/" + id)
             .then(response => response.json())
             .then(data => setProduct(data))
     }, []);
